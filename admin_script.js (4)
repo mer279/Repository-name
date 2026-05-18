@@ -54,16 +54,23 @@ async function addNewItem() {
     if (currentSectionId !== null && !price) return alert("يرجى إدخال السعر للمنتج");
 
     let imageBase64 = "";
-    if (fileInput.files[0]) {
-        imageBase64 = await convertBase64(fileInput.files[0]);
-    }
-
-    if (currentSectionId === null) {
+       if (currentSectionId === null) {
+        // إضافة قسم جديد
         data.push({ id: Date.now(), name: name, image: imageBase64, products: [] });
     } else {
+        // إضافة منتج جديد مع السعر
+        const priceInput = prompt("أدخل سعر هذا المنتج (بالريال السعودي):", "100");
+        const price = parseFloat(priceInput) || 100;
+        
         const section = data.find(s => s.id === currentSectionId);
-        section.products.push({ id: Date.now(), name: name, image: imageBase64, price: price });
+        section.products.push({ 
+            id: Date.now(), 
+            name: name, 
+            price: price, 
+            image: imageBase64 
+        });
     }
+ 
 
     save();
     render();
